@@ -23,6 +23,7 @@ if os.environ.get('DJANGO_ENV', None) == 'heroku':
             'PASSWORD': os.environ.get('DJANGO_DATABASE_PASSWORD'),
             'HOST': os.environ.get('DJANGO_DATABASE_HOST'),
             'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        }
     }
 else:
     DATABASES = {
