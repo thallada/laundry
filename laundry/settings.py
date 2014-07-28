@@ -14,16 +14,27 @@ MANAGERS = ADMINS
 
 PROJECT_PATH = os.path.join(os.path.abspath(os.path.dirname(__file__)), '..')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': secrets.DATABASE_NAME,
-        'USER': secrets.DATABASE_USER,
-        'PASSWORD': secrets.DATABASE_PASSWORD,
-        'HOST': secrets.DATABASE_HOST,
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+if os.environ.get('DJANGO_ENV', None) == 'heroku':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('DJANGO_DATABASE_NAME'),
+            'USER': os.environ.get('DJANGO_DATABASE_USER'),
+            'PASSWORD': os.environ.get('DJANGO_DATABASE_PASSWORD'),
+            'HOST': os.environ.get('DJANGO_DATABASE_HOST'),
+            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': secrets.DATABASE_NAME,
+            'USER': secrets.DATABASE_USER,
+            'PASSWORD': secrets.DATABASE_PASSWORD,
+            'HOST': secrets.DATABASE_HOST,
+            'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        }
+    }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
