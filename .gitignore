@@ -12,5 +12,4 @@ apache
 old
 *db
 laundry/secrets.py
-static
 *.svg
