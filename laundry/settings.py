@@ -1,6 +1,10 @@
 # Django settings for laundry project.
 import os
-import secrets
+try:
+    import secrets
+except ImportError:
+    print "No secrets.py add it or set DATABASES in settings.py manually."
+    pass # this occur only while on heroku
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
