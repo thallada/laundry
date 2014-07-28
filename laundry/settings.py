@@ -3,7 +3,7 @@ import os
 try:
     import secrets
 except ImportError:
-    print "No secrets.py add it or set DATABASES in settings.py manually."
+    print "No secrets.py add it or set DATABASES and SECRET_KEY in settings.py manually."
     pass # this occur only while on heroku
 
 DEBUG = True
@@ -104,7 +104,10 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = secrets.SECRET_KEY
+try:
+    SECRET_KEY = secrets.SECRET_KEY
+except NameError:  # if on heroku and there is no secrets file
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
