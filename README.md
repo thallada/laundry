@@ -18,9 +18,13 @@ decided to make this it's own website.
   * DATABASE_HOST
 * Modify the `ADMINS` variable in `settings.py` so you get emails when the site
   errors (happens when eSuds changes something on their site).
+* Create and activate a virtualenv: `virtualenv venv` and
+  `source venv/bin/activate`
+* Install the requirements: `pip install -r requirements.txt`
 * Run syncdb: `python manage.py syncdb`
 * Import the GMU Laundry Hall data: `python manage.py loaddata laundry.json`
 * Run the server: `python manage.py runserver`
+* Don't forget to set `DEBUG` to `False` when you are production ready.
 
 ##Errors##
 
@@ -47,6 +51,24 @@ The number is from the eSuds site in the chart for the hall (under the
 Sometimes errors happen when eSuds goes down too. Nothing we can really do about
 that, but perhaps we can improve our downtime by caching previous results and
 showing those in the intrim.
+
+##Backups##
+
+It would be a good idea to periodically dump the database because, right now,
+there isn't an automated way of creating the Halls and LaundryMachines. To [save
+the
+database](https://docs.djangoproject.com/en/dev/ref/django-admin/#dumpdata-app-label-app-label-app-label-model)
+run:
+
+`python manage.py dumpdata laundry_app > laundry_backup.json`
+
+You can load a backup with:
+
+`python manage.py loaddata laundry_backup.json`
+
+It would be nice of you to keep the `laundry.json` file in this repo up-to-date
+as halls' laundry machine configurations change so that anyone setting up this
+application will not have errors upon starting up.
 
 ##Todo##
 
