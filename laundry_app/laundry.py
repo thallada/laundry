@@ -33,21 +33,26 @@ def get_num_machines_per_status(status, records):
             len(filter(lambda r: r.machine.type == DRYER and
                 r.availability == status, records))]
 
-def generate_current_chart(filepath, records, hall):
+def generate_current_chart(records, hall, filepath=None):
     """
     Generate stacked bar chart of current laundry usage for specified hall and
     save svg at filepath.
     """
     custom_style = Style(colors=('#B6E354', '#FF5995', '#FEED6C', '#E41B17'))
-    chart = pygal.StackedBar(style=custom_style, width=800, height=512, explicit_size=True)
+    chart = pygal.StackedBar(style=custom_style, width=800, height=512,
+                             explicit_size=True)
     chart.title = 'Current laundry machine usage in ' + hall.name
     chart.x_labels = ['Washers', 'Dryers']
+    print records
     chart.add('Available', get_num_machines_per_status(AVAILABLE, records))
     chart.add('In Use', get_num_machines_per_status(IN_USE, records))
     chart.add('Cycle Complete', get_num_machines_per_status(CYCLE_COMPLETE, records))
     chart.add('Unavailable', get_num_machines_per_status(UNAVAILABLE, records))
     chart.range = [0, 11]
-    chart.render_to_file(filepath)
+    if filepath:
+        chart.render_to_file(filepath)
+    else:
+        return chart.render()
 
 # NOTE: Abandoning generating the weekly chart via mysql and Django for now.
 # (cron script and csv file is just easier) Sorry if there are a lot of
@@ -112,9 +117,8 @@ def update(hall, filepath=None):
             machine = LaundryMachine.objects.get(number=number, hall=hall)
         record = LaundryRecord(machine=machine, availability=availability,
                 time_remaining=time_remaining)
-        if filepath:
-            records.append(record)
-        else:
-            record.save()
+        records.append(record)
     if filepath:
-        generate_current_chart(filepath, records, hall)
+        generate_current_chart(records, hall, filepath=filepath)
+    else:
+        return generate_current_chart(records, hall)

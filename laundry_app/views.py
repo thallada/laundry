@@ -23,7 +23,6 @@ def ajax_get_current(request, hall):
     hall_obj = get_object_or_404(Hall, pk=hall)
     filename = str(hall_obj.id) + '_current.svg'
     try:
-        laundry.update(hall_obj, filepath=join(SVG_DIR, filename))
+        return HttpResponse(laundry.update(hall_obj), content_type='image/svg+xml')
     except ObjectDoesNotExist:
         return HttpResponse(status=500);
-    return HttpResponse(join(SVG_URL, filename))

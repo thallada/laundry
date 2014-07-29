@@ -27,7 +27,7 @@ function update_charts(selected) {
         request = $.ajax({
             url: '/ajax/current/' + halls[selected]
         }).done(function (result) {
-            svg.attr('src', result);
+            svg.attr('src', '/ajax/current/' + halls[selected]);
             $('#loading').remove();
             console.log(svg);
             $('.current-chart').append(svg);
