@@ -4,9 +4,9 @@ try:
     import secrets
 except ImportError:
     print "No secrets.py add it or set DATABASES and SECRET_KEY in settings.py manually."
-    pass # this occur only while on heroku
+    pass  # this occur only while on heroku
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
